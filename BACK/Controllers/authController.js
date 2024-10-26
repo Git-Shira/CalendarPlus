@@ -1,11 +1,11 @@
 const express = require("express");
-const router = express.Router();
+// const router = express.Router();
 
-const User = require("../models/User");
+const User = require("../Models/User");
 
 const bcrypt = require("bcrypt");
 
-router.post("/register", async (request, response) => {
+exports.register =  async (request, response) => {
     const {name, email, password } = request.body;
 
     try {
@@ -26,15 +26,15 @@ router.post("/register", async (request, response) => {
         await user.save();
         console.log("User saved successfully");
 
-        response.status(200).send({ user: user, message: "User created successfully" });
+        response.status(200).send({ message: "User created successfully",user: user });
     } catch (error) {
         console.error(error);
         response.status(500).send({ error: "Something went wrong" });
     }
-});
+};
 
 
-router.post("/login", async (request, response) => {
+exports.login =  async (request, response) => {
     const { email, password } = request.body;
 
     try {
@@ -49,13 +49,13 @@ router.post("/login", async (request, response) => {
             return response.status(405).send({ error: "Wrong Password" });
         }
 
-        response.status(200).send({ user: user, message: "User connected successfully" });
+        response.status(200).send({ message: "User connected successfully",user: user  });
     }
 
     catch (error) {
         console.error(error);
         response.status(500).send({ error: "Something went wrong" });
     }
-});
+};
 
-module.exports = router;
+// module.exports = router;

@@ -1,12 +1,15 @@
-const express = require("express");
-// const router = express.Router();
-
 const User = require("../Models/User");
-
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
-exports.register =  async (request, response) => {
-    const {name, email, password } = request.body;
+
+// Register a new user
+exports.register = async (request, response) => {
+    const { name, email, password } = request.body;
+
+    if (!name || !email || !password) {
+        return response.status(400).send({ error: 'name, email, and password are required.' });
+    }
 
     try {
         let user = await User.findOne({ email });
@@ -26,15 +29,25 @@ exports.register =  async (request, response) => {
         await user.save();
         console.log("User saved successfully");
 
-        response.status(200).send({ message: "User created successfully",user: user });
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const httpOnly = process.env.HTTP_ONLY === 'true';
+
+        response.cookie('authToken', token, {
+            httpOnly: httpOnly,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 3600000 // 1 hour
+        });
+
+        response.status(200).send({ message: "User created successfully" });
     } catch (error) {
         console.error(error);
         response.status(500).send({ error: "Something went wrong" });
     }
 };
 
-
-exports.login =  async (request, response) => {
+// Login a user
+exports.login = async (request, response) => {
     const { email, password } = request.body;
 
     try {
@@ -49,7 +62,17 @@ exports.login =  async (request, response) => {
             return response.status(405).send({ error: "Wrong Password" });
         }
 
-        response.status(200).send({ message: "User connected successfully",user: user  });
+        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const httpOnly = process.env.HTTP_ONLY === 'true';
+
+        response.cookie('authToken', token, {
+            httpOnly: httpOnly,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 3600000 // 1 hour
+        });
+
+        response.status(200).send({ message: "User connected successfully" });
     }
 
     catch (error) {
@@ -58,4 +81,7 @@ exports.login =  async (request, response) => {
     }
 };
 
-// module.exports = router;
+// Logout a user
+exports.logout = (request, response) => {
+    response.clearCookie('authToken').status(200).send({ message: "Logged out successfully" });
+};

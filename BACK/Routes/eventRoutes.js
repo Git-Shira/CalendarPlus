@@ -3,9 +3,11 @@ const router = express.Router();
 
 const eventController = require('../Controllers/eventController');
 
-router.post("/new-event", eventController.createEvent);
-router.put("/update-event/:id", eventController.updateEvent);
-router.delete("/delete-event/:id", eventController.deleteEvent);
-router.get("/all-events/:id", eventController.getAllEvents);
+const auth = require('../Middleware/auth'); // Import the auth middleware
+
+router.post("/new-event",auth, eventController.createEvent);
+router.put("/update-event/:id",auth, eventController.updateEvent);
+router.delete("/delete-event/:id",auth, eventController.deleteEvent);
+router.get("/all-events",auth, eventController.getAllEvents);
 
 module.exports = router;

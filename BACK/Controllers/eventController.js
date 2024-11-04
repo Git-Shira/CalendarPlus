@@ -1,11 +1,10 @@
-const express = require("express");
-// const router = express.Router();
-
 const User = require("../Models/User");
 const Event = require("../Models/Event");
 
+// Create a new event
 exports.createEvent = async (request, response) => {
-    const { userId, title, start, end, location, description, color } = request.body;
+    const userId = request.user._id;
+    const { title, start, end, location, description, color } = request.body;
 
     try {
         let user = await User.findOne({ _id: userId });
@@ -31,6 +30,7 @@ exports.createEvent = async (request, response) => {
     }
 };
 
+// Update an existing event
 exports.updateEvent = async (request, response) => {
     const id = request.params.id;
     const update = request.body;
@@ -47,6 +47,7 @@ exports.updateEvent = async (request, response) => {
     }
 };
 
+// Delete an event
 exports.deleteEvent = async (request, response) => {
     const id = request.params.id;
 
@@ -62,20 +63,19 @@ exports.deleteEvent = async (request, response) => {
     }
 };
 
+// Get all events
 exports.getAllEvents = async (request, response) => {
-    const id = request.params.id;
+    const userId = request.user._id;
 
     try {
-        const user = await User.findOne({ _id: id });
+        const user = await User.findOne({ _id: userId });
         if (!user)
-            return response.status(400).send({ error: "User does not exist" });
+            return response.status(400).send({ error: "User not found" });
 
-        const events = await Event.find({ userId: id });
+        const events = await Event.find({ userId: userId });
         response.status(200).send({ message: "All events", events: events });
     } catch (error) {
         console.error(error);
         response.status(500).send({ error: "Something went wrong" });
     }
 };
-
-// module.exports = router;

@@ -2,20 +2,32 @@ import React, { useState } from 'react'
 
 import axios from "axios";
 
+import { Link, useNavigate } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
-import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { Button } from '@mui/material'; 
-
 import Alert from '@mui/material/Alert';
+
+import { IconButton, InputAdornment, } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmationPassword, setConfirmationPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false); 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const [showConfirmationPassword, setShowConfirmationPassword] = useState(false);   
+  const toggleConfirmationPasswordVisibility = () => {
+    setShowConfirmationPassword(!showConfirmationPassword);
+  };
 
   const navigation = useNavigate();
 
@@ -36,6 +48,8 @@ const SignupPage = () => {
     }
     if (!password) {
       error.password = "Required field";
+    }else if(password.length < 8){
+      error.password = "The password must be at least 8 characters long";
     }
     if (password !== confirmationPassword) {
       error.confirmationPassword = "The confirmation password must match the original password.";
@@ -65,8 +79,6 @@ const SignupPage = () => {
           
 
           if (response.status === 200) {
-            // const user = response.data.user;
-            // localStorage.setItem("user", JSON.stringify(user));
             setError("");
             console.log("User created successfully");
             setSuccess("User created successfully");
@@ -169,31 +181,49 @@ const SignupPage = () => {
           required
           id="outlined-password-input SignupPassword"
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"} 
           autoComplete="current-password"
           variant="outlined"
-
           value={password}
           onChange={(e) => setPassword(e.target.value)}
 
           error={validationError.password}
           helperText={validationError.password}
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
         <br />
         <TextField
           required
           id="outlined-password-input SignupconfirmationPassword"
           label="Confirmation Password"
-          type="password"
+          type={showConfirmationPassword ? "text" : "password"} 
           autoComplete="current-password"
           variant="outlined"
-
           value={confirmationPassword}
           onChange={(e) => setConfirmationPassword(e.target.value)}
 
           error={validationError.confirmationPassword}
           helperText={validationError.confirmationPassword}
-        />
+        
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={toggleConfirmationPasswordVisibility} edge="end">
+                  {showConfirmationPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+          />
 
         <Button
           variant="contained"

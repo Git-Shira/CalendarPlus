@@ -2,28 +2,27 @@ import React, { useState } from 'react'
 
 import axios from "axios";
 
+import { Link, useNavigate } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-
-import { Link, useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 import { Button } from '@mui/material'; 
-
-// import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-// import { login } from '../Redux/userSlice';
-
 import Alert from '@mui/material/Alert';
+
+import { IconButton, InputAdornment, } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false); 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const navigation = useNavigate();
-
-
-  // const dispatch = useDispatch();
-  // const user = useSelector((state)=>state.user);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -37,6 +36,8 @@ const LoginPage = () => {
     }
     if (!password) {
       error.password = "Required field";
+    }else if(password.length < 8){
+      error.password = "The password is too short";
     }
 
     setValidationError(error);
@@ -60,9 +61,6 @@ const LoginPage = () => {
         });
 
         if (response.status === 200) {
-          // const user = response.data.user;
-          // dispatch(login(user));
-          // localStorage.setItem("user", JSON.stringify(user));
           setError("");
           console.log("User connected successfully");
           setSuccess("User connected successfully");
@@ -154,15 +152,24 @@ const LoginPage = () => {
           required
           id="outlined-password-input LoginPassword"
           label="Password"
-          type="password"
+          type={showPassword ? "text" : "password"} 
           autoComplete="current-password"
           variant="outlined"
-
           value={password}
           onChange={(e) => setPassword(e.target.value)}
 
           error={validationError.password}
           helperText={validationError.password}
+
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
 
         <Button
@@ -179,8 +186,6 @@ const LoginPage = () => {
         >
           Login
         </Button>
-
-
 
         <Box sx={{
           display: 'flex',

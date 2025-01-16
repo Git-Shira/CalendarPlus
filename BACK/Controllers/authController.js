@@ -62,7 +62,7 @@ exports.register = async (request, response) => {
         response.cookie('authToken', token, {
             httpOnly: httpOnly,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',  
             maxAge: tokenExpiresInMilliseconds
         });
 
@@ -97,7 +97,7 @@ exports.login = async (request, response) => {
         response.cookie('authToken', token, {
             httpOnly: httpOnly,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
             maxAge: tokenExpiresInMilliseconds
         });
 

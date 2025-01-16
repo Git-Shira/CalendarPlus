@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS configuration to allow specific origins and enable credentials
-const allowedOrigins = ['http://localhost:5173', 'http://calendar-plus.vercel.app'];
+const allowedOrigins = ['http://localhost:5173', 'https://calendar-plus-virid.vercel.app','https://calendar-plus-shira-prod.vercel.app', 'https://calendar-plus-git-main-shira-prod.vercel.app/'];
 
 const corsOptions = {
     origin: function (origin, callback) {

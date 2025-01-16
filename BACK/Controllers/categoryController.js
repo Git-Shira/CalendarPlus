@@ -10,7 +10,7 @@ exports.getAllCategories = async (request, response) => {
     }
 
     try {
-        const categories = await Category.find({ userId: userId });
+        const categories = await Category.find({ userId: userId }).collation({ locale: 'en', strength: 1 }).sort({ name: 1 });
         if (!categories || categories.length === 0)
             return response.status(400).send({ error: "No categories found for this user" });
 

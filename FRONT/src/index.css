@@ -14,12 +14,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --light: pink;
-  --dark: red;
-
-  --text: black;
-  --bg: white;
-
   /* gradient */
   --gradient-full: linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9, #9b72cf, #c8b1e4);
   --gradient-transparent: linear-gradient(to right, rgba(73, 109, 75, 0.6), rgba(131, 197, 190, 0.6), rgba(200, 177, 228, 0.6));

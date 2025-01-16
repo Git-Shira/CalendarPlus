@@ -1,8 +1,10 @@
+* {
+  font-family: 'Sour Gummy', cursive !important;
+  outline: none !important;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -11,15 +13,77 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --light: pink;
+  --dark: red;
+
+  --text: black;
+  --bg: white;
+
+  /* gradient */
+  --gradient-full: linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9, #9b72cf, #c8b1e4);
+  --gradient-transparent: linear-gradient(to right, rgba(73, 109, 75, 0.6), rgba(131, 197, 190, 0.6), rgba(200, 177, 228, 0.6));
+  --gradient: linear-gradient(to bottom right, #a3b18a, #83c5be, #c8b1e4);
+
+  /* background */
+  --bg: #f0f8f4;
+
+  /* green */
+  --green-dark: #496d4b;
+  --green-light: #a3b18a;
+
+  /* turquoise */
+  --turquoise-dark: #006d77;
+  --turquoise-light: #83c5be;
+
+  /* btn */
+  --turquoise-focus: #bfdeda;
+  --turquoise-hover: #d5eae7;
+
+  /* show-more-hover */
+  --turquoise-2: #009e99;
+
+  /* purple */
+  --purple-dark: #9b72cf;
+  --purple-light: #c8b1e4;
+  --danger: #d32f2f;
+
+  background: var(--bg) !important;
+}
+
+.css-wlsqrd-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem.Mui-selected {
+  background-color: #bfdeda !important;
+}
+
+.css-wlsqrd-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem.Mui-selected:hover,
+.css-wlsqrd-MuiButtonBase-root-MuiMenuItem-root-MuiTablePagination-menuItem:hover {
+  background-color: #d5eae7 !important;
+}
+
+.css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+  color: #000 !important;
+}
+
+body {
+  background: var(--bg) !important;
+  outline: none !important;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px #f0f8f4 inset !important;
+  -webkit-text-fill-color: #000 !important;
+  border-radius: 16px !important;
+  transition: background-color 5000s ease-in-out 0s;
+  z-index: -1 !important;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
-  color: #535bf2;
+  text-decoration: underline;
 }
 
 body {
@@ -42,13 +106,10 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -59,10 +120,334 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
-  a:hover {
-    color: #747bff;
-  }
+
   button {
     background-color: #f9f9f9;
   }
+}
+
+.btn {
+  margin-top: 20px;
+  position: relative;
+  display: inline-block;
+  width: 277px;
+  height: 50px;
+  line-height: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none !important;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  outline: none !important;
+  border: none;
+}
+
+.btn svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.btn svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 353, 0;
+  stroke-dashoffset: 0;
+  -webkit-transition: all 600ms ease;
+  transition: all 600ms ease;
+}
+
+.btn span {
+
+  background: linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9, #9b72cf, #c8b1e4);
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.danger-btn span {
+  background: linear-gradient(to right, #d32f2f, #e07e7e, #d32f2f) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.btn:hover svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 140, 500;
+  stroke-dashoffset: 308;
+}
+
+.btn.danger-btn:hover svg rect {
+  stroke-dasharray: 140, 380;
+}
+
+.btn.modal-btns:hover svg rect {
+  stroke-dasharray: 55, 400;
+}
+
+.btn[disabled] {
+  cursor: not-allowed;
+}
+
+.btn[disabled] span {
+  background: linear-gradient(90deg, rgb(163, 163, 163) 0%, rgb(163, 163, 163) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn[disabled] svg rect {
+  stroke-dasharray: 353, 0;
+}
+
+.btn-forgotPass {
+  margin-right: -20px;
+  position: relative;
+  display: inline-block;
+  width: 210px;
+  height: 50px;
+  line-height: 40px;
+  text-align: center;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none !important;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  outline: none !important;
+  border: none !important;
+}
+
+.btn-forgotPass svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.btn-forgotPass svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 353, 0;
+  stroke-dashoffset: 0;
+  -webkit-transition: all 600ms ease;
+  transition: all 600ms ease;
+}
+
+.btn-forgotPass span {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn-forgotPass:hover svg rect {
+  stroke-width: 4;
+  stroke-dasharray: 130, 415;
+  stroke-dashoffset: 308;
+}
+
+.rbc-day-bg,
+.rbc-header,
+.rbc-month-row+.rbc-month-row,
+.rbc-month-view,
+
+.rbc-time-content,
+.rbc-time-header-content,
+.rbc-timeslot-group,
+.rbc-time-view,
+
+.rbc-overlay-header {
+  position: relative;
+  z-index: 1;
+}
+
+.rbc-time-header {
+  /* margin-right: 0px; */
+}
+
+.rbc-day-bg::after,
+.rbc-header::after,
+.rbc-month-row+.rbc-month-row::after,
+.rbc-month-view::after,
+
+.rbc-time-content::after,
+.rbc-time-header-content::after,
+.rbc-timeslot-group::after,
+.rbc-time-view::after,
+
+.rbc-overlay::after,
+.rbc-overlay-header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  border: 1px solid transparent;
+
+  border-image: linear-gradient(to right, #496d4b, #83c5be, #c8b1e4) 1;
+
+}
+
+.rbc-overlay::after,
+.rbc-overlay-header::after {
+  border: 2px solid transparent;
+  border-image: linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9, #9b72cf, #c8b1e4) 1;
+}
+
+.rbc-day-bg.rbc-off-range-bg {
+  background: rgba(73, 109, 75, 0.3);
+
+}
+
+.custom-select {
+  background-color: #f0f8f4;
+  border: 2px solid transparent;
+  border-image-source: linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9, #9b72cf, #c8b1e4);
+  border-image-slice: 1;
+  padding: 8px 12px;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 109, 119, 0.5);
+  border-radius: 4px;
+}
+
+.custom-select option {
+  background-color: transparent;
+  color: black;
+  padding: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-select option:checked {
+  background-color: #bfdeda !important;
+}
+
+option:hover {
+  background-color: #d5eae7 !important;
+}
+
+.custom-select option:checked:hover {
+  background-color: #bfdeda !important;
+}
+
+.custom-select option:disabled {
+  color: #bbb;
+}
+
+.custom-select::-ms-expand {
+  display: none;
+}
+
+.custom-select:focus::-webkit-appearance {
+  color: #006d77 !important;
+}
+
+.custom-select:hover::-webkit-appearance {
+  color: #006d77 !important;
+}
+
+option:hover {
+  background-color: #d5eae7 !important;
+  cursor: pointer;
+}
+
+select option:checked,
+select option:hover {
+  box-shadow: 0 0 10px 100px #000 inset;
+}
+
+.custom-select__menu ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-select__menu ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 109, 119, 0.5);
+  border-radius: 18px;
+}
+
+.custom-select__menu ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 109, 119, 0.8);
+}
+
+.custom-select__menu ::-webkit-scrollbar-track {
+  background-color: #d5eae7;
+}
+
+.react-datepicker {
+  display: flex !important;
+  flex-direction: row !important;
+
+  border-color: #006d77 !important;
+}
+
+.react-datepicker-popper {
+  z-index: 10 !important;
+}
+
+.react-datepicker__triangle {
+  fill: #bfdeda !important;
+  color: #006d77 !important;
+  stroke: transparent !important;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: #006d77 !important;
+}
+
+.react-datepicker__header {
+  background-color: #bfdeda !important;
+  border-color: #006d77 !important;
+
+}
+
+.react-datepicker__header--time {
+  padding-top: 32.5px !important;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #d5eae7 !important;
+}
+
+.react-datepicker__time-list-item--selected,
+.react-datepicker__day--selected {
+  background-color: #006d77 !important;
+}
+
+.react-datepicker__time-container {
+  border-color: #006d77 !important;
+}
+
+.react-datepicker__time-list-item:hover,
+.react-datepicker__day:hover {
+  background-color: #d5eae7 !important;
+  color: #000 !important;
+}
+
+.react-datepicker__time ::-webkit-scrollbar {
+  width: 8px;
+}
+
+.react-datepicker__time ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 109, 119, 0.5);
+  border-radius: 18px;
+}
+
+.react-datepicker__time ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 109, 119, 0.8);
+}
+
+.react-datepicker__time ::-webkit-scrollbar-track {
+  background-color: #d5eae7;
+  border-right: 1px solid #006d77;
+}
+
+.rbc-day-selected {
+  background-color: red !important;
+  transition: background-color 0.3s ease;
 }

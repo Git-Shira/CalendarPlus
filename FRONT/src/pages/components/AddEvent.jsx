@@ -271,12 +271,13 @@ const AddEvent = (props) => {
                         },
                     })}
                     showTimeSelect
-                    dateFormat="HH:mm dd/MM/yyyy"
-                    timeFormat="HH:mm"
+                    dateFormat="hh:mm aa  dd/MM/yyyy"
+                    timeFormat="hh:mm aa"
                     timeIntervals={15}
-                    placeholderText="dd/mm/yyyy  --:--"
+                    placeholderText="--:-- AM/PM  dd/mm/yyyy"
                     className="custom-date-picker"
                 />
+
             </FormControl>
 
             <FormControl fullWidth>
@@ -306,10 +307,10 @@ const AddEvent = (props) => {
                     })}
 
                     showTimeSelect
-                    dateFormat="HH:mm dd/MM/yyyy"
-                    timeFormat="HH:mm"
+                    dateFormat="hh:mm aa  dd/MM/yyyy"
+                    timeFormat="hh:mm aa"
                     timeIntervals={15}
-                    placeholderText="dd/mm/yyyy  --:--"
+                    placeholderText="--:-- AM/PM  dd/mm/yyyy"
                     className="custom-date-picker"
                 />
             </FormControl>

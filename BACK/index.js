@@ -8,7 +8,6 @@ const cors = require("cors");
 
 const connectDB = require("./db");
 
-
 // Initialize Express application
 const app = express();
 // Middleware to parse JSON bodies
@@ -17,18 +16,28 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS configuration to allow specific origins and enable credentials
+const allowedOrigins = ['http://localhost:5173', 'http://calendar-plus.vercel.app'];
+
 const corsOptions = {
-    origin: 'http://localhost:5173', 
-    credentials: true, 
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true); 
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
 };
+
 app.use(cors(corsOptions))
 
 // MongoDB connection setup
 connectDB();
 
 // Import and use routes
-app.use("/auth",  require('./Routes/authRoutes'));
+app.use("/auth", require('./Routes/authRoutes'));
 app.use("/events", require('./Routes/eventRoutes'));
+app.use("/categories", require('./Routes/categoryRoutes'));
 
 // Start the server and listen on port specified in the environment variable (.env file)
 const PORT = process.env.PORT || 3000;

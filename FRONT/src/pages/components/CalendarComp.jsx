@@ -141,9 +141,11 @@ const CalendarComp = (props) => {
         }
 
         const style = {
-            backgroundColor: event.category
-                ? event.category?.color
-                : event.color || '#83c5be',
+            backgroundColor: event.category?.color?.trim()
+                ? event.category.color
+                : event.color?.trim()
+                    ? event.color
+                    : '#83c5be',
 
             borderRadius: '4px',
             opacity: 0.8,

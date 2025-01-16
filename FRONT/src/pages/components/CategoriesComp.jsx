@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 // Import MUI components and utilities
-import { TextField, IconButton, Typography, Box } from '@mui/material';
+import { TextField, IconButton, Typography, Alert, Box } from '@mui/material';
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -53,6 +53,9 @@ const CategoriesComp = (props) => {
         color: ''
     });
 
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
     const handleChangeInput = (e) => {
         const { name, value } = e.target;
         setNewCategory({ ...newCategory, [name]: value });
@@ -69,24 +72,38 @@ const CategoriesComp = (props) => {
             });
 
             if (response.status === 200) {
+                setError("");
+                setSuccess("Category created successfully");
                 console.log("Category created successfully");
                 props.getCategories();
-                setNewCategory({
-                    name: '',
-                    color: '',
-                });
+
+                setTimeout(() => {
+                    setSuccess("");
+                    setNewCategory({
+                        name: '',
+                        color: '',
+                    });
+                    setExpanded('panel2');
+                }, 2000);
             }
 
         } catch (error) {
+            setSuccess("");
 
-            if (error.response.status === 401)
+            if (error.response.status === 401) {
+                setError("Access denied. No token provided.");
                 console.error("Access denied. No token provided.");
+            }
 
-            if (error.response.status === 400)
+            if (error.response.status === 400) {
+                setError("Category with this name already exists for this user");
                 console.error("Category with this name already exists for this user");
+            }
 
-            if (error.response.status === 500)
+            if (error.response.status === 500) {
+                setError("An error occurred while creating the category");
                 console.error("An error occurred while creating the category");
+            }
 
             console.error("Error creating category:", error);
             alert("Failed to create category");
@@ -131,6 +148,7 @@ const CategoriesComp = (props) => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center',
+                marginBottom: expanded === 'panel2' ? 1 : 0,
             }}
         >
             <Typography
@@ -334,6 +352,29 @@ const CategoriesComp = (props) => {
                             </span>
                         </button>
 
+                        {success && (
+                            <Alert
+                                variant="outlined"
+                                severity="success"
+                                sx={{
+                                    mt: 2,
+                                    width: { xs: '90%', sm: '40ch' },
+                                }}>
+                                {success}
+                            </Alert>
+                        )}
+
+                        {error && (
+                            <Alert
+                                variant="outlined"
+                                severity="error"
+                                sx={{
+                                    mt: 2,
+                                    width: { xs: '90%', sm: '40ch' },
+                                }}>
+                                {error}
+                            </Alert>
+                        )}
                     </Box>
                 </AccordionDetails>
             </Accordion>

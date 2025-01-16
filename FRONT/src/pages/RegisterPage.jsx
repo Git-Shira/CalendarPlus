@@ -1,11 +1,11 @@
 // Import React and React hooks
 import React, { useState } from 'react';
 
-// Import routing
-import { Link, useNavigate } from 'react-router-dom';
-
 // Import axios for HTTP requests
 import axios from "axios";
+
+// Import routing
+import { Link, useNavigate } from 'react-router-dom';
 
 // Import styling components from MUI
 import { Box, TextField, Typography, Alert, IconButton, InputAdornment } from '@mui/material';
@@ -13,17 +13,24 @@ import { Box, TextField, Typography, Alert, IconButton, InputAdornment } from '@
 // Import icons from MUI
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const LoginPage = (props) => {
+const RegisterPage = () => {
   const port = import.meta.env.VITE_PORT;
 
   const navigation = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmationPassword, setConfirmationPassword] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const [showConfirmationPassword, setShowConfirmationPassword] = useState(false);
+  const toggleConfirmationPasswordVisibility = () => {
+    setShowConfirmationPassword(!showConfirmationPassword);
   };
 
   const [error, setError] = useState("");
@@ -32,6 +39,11 @@ const LoginPage = (props) => {
 
   const validate = () => {
     const error = {};
+    if (!name) {
+      error.name = "Required field";
+    } else if (!/^[a-zA-Z]+( [a-zA-Z]+)*$/.test(name)) {
+      error.name = "Please enter a valid full name without leading or trailing spaces";
+    }
     if (!email) {
       error.email = "Required field";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -40,7 +52,10 @@ const LoginPage = (props) => {
     if (!password) {
       error.password = "Required field";
     } else if (password.length < 8) {
-      error.password = "The password is too short";
+      error.password = "The password must be at least 8 characters long";
+    }
+    if (password !== confirmationPassword) {
+      error.confirmationPassword = "The confirmation password must match the original password";
     }
 
     setValidationError(error);
@@ -52,39 +67,40 @@ const LoginPage = (props) => {
 
     if (validate()) {
       const userData = {
+        name: name,
         email: email,
         password: password
       };
 
       try {
-        const response = await axios.post(
-          `${port}/auth/login`,
-          userData, {
-          withCredentials: true
-        });
-
-        if (response.status === 200) {
-          setError("");
-          console.log("User connected successfully");
-          setSuccess("User connected successfully");
-
-          props.setUser(userData);
-
-          setTimeout(() => {
-            navigation("/dashboard")
-          }, 2000);
+        if (password === confirmationPassword) {
+          const response = await axios.post(
+            `${port}/auth/register`,
+            userData, {
+            withCredentials: true
+          });
+          if (response.status === 200) {
+            setError("");
+            console.log("User created successfully");
+            setSuccess("User created successfully");
+            setTimeout(() => {
+              navigation("/login")
+            }, 2000);
+          }
         }
-
       } catch (error) {
         setSuccess("");
+
+        if (error.response.status === 401) {
+          console.error("name, email, and password are required.");
+          setError("name, email, and password are required.");
+        }
+
         if (error.response.status === 400) {
-          console.error("User does not exist");
-          setError("User does not exist");
+          console.error("User already exist");
+          setError("User already exist");
         }
-        if (error.response.status === 405) {
-          console.error("Wrong Password");
-          setError("Wrong Password");
-        }
+
         if (error.response.status === 500) {
           console.error("Something went wrong");
           setError("Something went wrong");
@@ -96,12 +112,14 @@ const LoginPage = (props) => {
   }
 
   return (
-    <Box className='login-page' sx={{
+    <Box className='register-page' sx={{
       display: 'flex',
       justifyContent: 'flex-start',
       minHeight: '100vh',
       backgroundImage: { xs: 'url(/background-mobile.png)', lg: 'url(/background-desktop.png)' },
-      backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat'
     }}>
       <Box
         component="form"
@@ -111,7 +129,7 @@ const LoginPage = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           padding: 3,
-          width: { xs: '90%', sm: '75%', md: '50%', lg: '40%' },
+
           margin: '0 auto',
 
           '& .MuiTextField-root': {
@@ -151,7 +169,6 @@ const LoginPage = (props) => {
               },
               zIndex: 0,
             },
-
             '& .MuiInputLabel-root': {
               position: 'absolute',
               top: '50%',
@@ -163,7 +180,6 @@ const LoginPage = (props) => {
               transition: 'all 0.3s ease',
               color: "#496d4b",
             },
-
             '& .MuiInputLabel-shrink': {
               top: '-8px',
               transform: 'translateY(0)',
@@ -193,12 +209,27 @@ const LoginPage = (props) => {
             textShadow: '3px 3px 4px rgba(0, 0, 0, 0.3)'
           }}
         >
-          Login
+          Register
         </Typography>
 
         <TextField
           required
-          id="outlined-required LoginEmail"
+          id="outlined-required RegisterName"
+          label="Name"
+          variant="outlined"
+
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+
+          error={validationError.name}
+          helperText={validationError.name}
+        />
+
+        <br />
+
+        <TextField
+          required
+          id="outlined-required RegisterEmail"
           label="Email address"
           variant="outlined"
 
@@ -213,37 +244,66 @@ const LoginPage = (props) => {
 
         <TextField
           required
-          id="outlined-password-input LoginPassword"
+          id="outlined-password-input RegisterPassword"
           label="Password"
           type={showPassword ? "text" : "password"}
-          autoComplete="current-password"
+          autoComplete="off"
           variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
 
           error={validationError.password}
           helperText={validationError.password}
+
           slotProps={{
             input: {
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={togglePasswordVisibility} edge="end"
-                    sx={{ color: '#c8b1e4', outline: 'none !important' }}>
+                  <IconButton onClick={togglePasswordVisibility} edge="end" sx={{ color: '#c8b1e4', outline: 'none !important' }}>
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
-            },
+            }
           }}
         />
 
-        <button className="btn" onClick={handleSubmit}
-          disabled={password.trim() == "" || email.trim() == ""}
+        <br />
+
+        <TextField
+          required
+          id="outlined-password-input RegisterconfirmationPassword"
+          label="Confirmation Password"
+          type={showConfirmationPassword ? "text" : "password"}
+          autoComplete="current-password"
+          variant="outlined"
+          value={confirmationPassword}
+          onChange={(e) => setConfirmationPassword(e.target.value)}
+
+          error={validationError.confirmationPassword}
+          helperText={validationError.confirmationPassword}
+
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={toggleConfirmationPasswordVisibility} edge="end" sx={{ color: '#c8b1e4', outline: 'none !important' }}>
+                    {showConfirmationPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }
+          }}
+        />
+
+        <button className="btn"
+          onClick={password === confirmationPassword && handleSubmit}
+          disabled={name.trim() == "" || email.trim() == "" || password.trim() == "" || password !== confirmationPassword}
         >
           <svg width="277" height="62">
             <defs>
               <linearGradient id="grad1">
-                {!(password.trim() == "" || email.trim() == "")
+                {!(name.trim() == "" || email.trim() == "" || password.trim() == "" || password !== confirmationPassword)
                   ?
                   <>
                     <stop offset="0%" stop-color="#496d4b" />
@@ -254,6 +314,7 @@ const LoginPage = (props) => {
                     <stop offset="71.43%" stop-color="#89c2d9" />
                     <stop offset="85.71%" stop-color="#9b72cf" />
                     <stop offset="100%" stop-color="#c8b1e4" />
+
                   </> : <>
                     <stop offset="0%" stop-color="#ccc" />
                   </>}
@@ -262,7 +323,7 @@ const LoginPage = (props) => {
             <rect x="5" y="5" rx="25" fill="none" stroke="url(#grad1)" width="266" height="50"></rect>
           </svg>
           <span>
-            Login
+            Register
           </span>
         </button>
 
@@ -271,42 +332,22 @@ const LoginPage = (props) => {
           justifyContent: 'center',
           alignItems: 'center',
           gap: 1,
-          mt: 3,
+          mt: 2,
           width: { xs: '100%', sm: '40ch', md: '50ch' },
         }}>
-          <Link to="/forgot-password" variant="body2" underline="hover"
-            style={{
-              color: '#c8b1e4'
-            }}
-          >
-            Forgot password
-          </Link>
-        </Box>
-
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 1,
-          mt: 0,
-          width: { xs: '100%', sm: '40ch', md: '50ch' },
-        }}>
-
-          <Typography variant="body2" color="textSecondary"
-            sx={{
-              background: 'linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              fontWeight: 'bold',
-              paddingTop: '5px'
-            }}>
-            Don’t have an account?
+          <Typography variant="body2" color="textSecondary" sx={{
+            background: 'linear-gradient(to right, #496d4b, #a3b18a, #006d77, #83c5be, #1d8ea9, #89c2d9)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontWeight: 'bold', paddingTop: '5px'
+          }}>
+            Already have an account?
           </Typography>
-          <Link to="/register" variant="body2" color="primary" underline="hover"
+          <Link to="/login" variant="body2" underline="hover"
             style={{
               color: "#c8b1e4",
             }}>
-            Create one
+            Log in
           </Link>
         </Box>
 
@@ -342,4 +383,4 @@ const LoginPage = (props) => {
   )
 }
 
-export default LoginPage;
+export default RegisterPage;

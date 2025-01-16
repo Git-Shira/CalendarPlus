@@ -14,6 +14,19 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    categories: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Category',
+        default: []
+    },
+    resetPasswordCode: {
+        type: String,  
+        default: null
+    },
+    resetPasswordExpires: {
+        type: Date,  
+        default: null
+    }
 });
 
 module.exports = mongoose.model("User", UserSchema);

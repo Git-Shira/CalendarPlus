@@ -20,7 +20,14 @@ const EventSchema = new mongoose.Schema({
     },
     location: String,
     description: String,
-    color: String,
+    color: {
+        type: String,
+    },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        require:false
+    }
 });
 
 module.exports = mongoose.model("Event", EventSchema);

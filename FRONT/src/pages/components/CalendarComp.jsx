@@ -150,8 +150,11 @@ const CalendarComp = (props) => {
             borderRadius: '4px',
             opacity: 0.8,
             color: getTextColor(
-                event.category ? event.category?.color : event.color || '#83c5be'
-            ),
+                event.category?.color?.trim()
+                    ? event.category.color
+                    : event.color?.trim()
+                        ? event.color
+                        : '#83c5be'),
             border: 'none',
         };
         return {

@@ -114,7 +114,7 @@ const ListEvents = (props) => {
                         sx={{
                             width: '96%',
                             margin: '0 auto',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
                         }}>
                         <TableHead
                             sx={{
@@ -175,7 +175,7 @@ const ListEvents = (props) => {
                                         onMouseEnter={(e) => (e.currentTarget.style.transform = 'scale(1.03)')}
                                         onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
                                     >
-                                        <TableCell sx={{ border: 'none' }}>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>
                                             <div
                                                 style={{
                                                     width: '30px',
@@ -192,13 +192,13 @@ const ListEvents = (props) => {
                                                 }}
                                             ></div>
                                         </TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{event.title}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{new Date(event.start).toLocaleDateString()}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{new Date(event.end).toLocaleDateString()}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{event.location}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{event.description}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{event.category ? event.category.name : ""}</TableCell>
-                                        <TableCell sx={{ border: 'none' }}>{renderStatusChip(event.status)}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {event.title}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {new Date(event.start).toLocaleDateString()}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {new Date(event.end).toLocaleDateString()}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>      {event.location ? event.location : '-'}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {event.description ? event.description : '-'}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {event.category ? event.category.name : '-'}</TableCell>
+                                        <TableCell sx={{ border: 'none', textAlign: 'center', }}>    {renderStatusChip(event.status)}</TableCell>
                                     </TableRow>
                                 ))}
                         </TableBody>

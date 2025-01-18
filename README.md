@@ -9,15 +9,18 @@
 5. [Setup and Installation](#setup-and-installation)
 6. [Environment Variables](#environment-variables)
 
+
 ## Project Overview
 
 ![Calendar Plus](./README/1.png)
 
 **Calendar Plus** is a feature-rich personal calendar and event management application. It allows users to register, log in, and manage their events efficiently. The application is built with a user-friendly interface and robust backend functionalities to provide a seamless experience. The website is fully responsive and suitable for viewing on all device types.
 
+
 ## Website Flow
 
 Below are descriptions of the key pages, followed by screenshots:
+
 
 ### 1. Landing Page
 
@@ -53,12 +56,15 @@ Below are descriptions of the key pages, followed by screenshots:
 ### 5. Dashboard
 
 - Displays a calendar with the user's created events.
+
 ![Dashboard Page](./README/6.png)
 
   - Clicking on a day allows the user to easily create an event for that specific day.
+
 ![Dashboard Page - Add a new event](./README/7.png)
 
   - Clicking on an existing event opens a detailed view with options to edit or delete the event.
+
 ![Dashboard Page - view exiting event](./README/8.png)
 ![Dashboard Page - Edit exiting event](./README/9.png)
 
@@ -73,9 +79,11 @@ Below are descriptions of the key pages, followed by screenshots:
 
 - **Categories**:
   - Add a new category.
+
 ![Add a new category](./README/12.png)
 
   - View existing categories with options to edit or delete them.
+
 ![View existing categories](./README/13.png)
 
 ### Profile Menu
@@ -95,11 +103,12 @@ Profile menu options:
 
 ![Edit Profile](./README/16.png)
 
-  - Permanently delete the account.
+- Permanently delete the account.
 
 ![Delete account](./README/17.png)
 
 - **Logout**: Securely logs the user out of the current device.
+
 
 ## Directory Structure
 
@@ -119,6 +128,7 @@ Profile menu options:
   - **`components/`**: A subdirectory within pages for reusable React components used throughout the application.
 - **`App.jsx`**: The main application file that sets up routing and overall structure.
 - **`main.jsx`**: The entry point of the React application.
+
 
 ## Technologies Used
 
@@ -142,6 +152,7 @@ The project leverages modern web development technologies to deliver a robust an
 ### Database
 
 - **MongoDB**: A NoSQL database to store user data, events, and categories.
+
 
 ## Setup and Installation
 
@@ -190,6 +201,7 @@ The project leverages modern web development technologies to deliver a robust an
    ```bash
    npm install
    ```
+
 
 ## Environment Variables
 

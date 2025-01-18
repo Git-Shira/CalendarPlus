@@ -95,7 +95,7 @@ Profile menu options:
 
 ![Edit Profile](./README/16.png)
 
-    - Permanently delete the account.
+  - Permanently delete the account.
 
 ![Delete account](./README/17.png)
 

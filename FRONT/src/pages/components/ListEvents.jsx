@@ -137,7 +137,7 @@ const ListEvents = (props) => {
                                             fontSize: '1.1rem',
                                             fontWeight: 400,
                                             '& :hover, .Mui-active, .Mui-active .MuiTableSortLabel-icon': {
-                                                color: '#009e99'
+                                                color: '#009e99 !important',
                                             },
                                         }}
                                     >

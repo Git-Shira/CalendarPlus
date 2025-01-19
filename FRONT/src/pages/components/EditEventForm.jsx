@@ -161,6 +161,7 @@ const EditEventForm = (props) => {
             backgroundOrigin: "border-box",
             backgroundClip: "padding-box, border-box",
             transition: "box-shadow 0.3s ease, border-color 0.3s ease",
+            color:'black',
             "&:focus": {
               outline: "none",
               border: '3.5px solid transparent',
